@@ -1,19 +1,20 @@
 <%= form_with(model: attachment, html: { class: 'data-form' }) do |form| %>
-  <% if attachment.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(attachment.errors.count, "error") %> prohibited this attachment from being saved:</h2>
+    <div id="errors-upload-file" style="color: red">
+      <% if attachment.errors.any? %>
+        <h2><%= pluralize(attachment.errors.count, "error") %> prohibited this attachment from being saved:</h2>
 
-      <ul>
-        <% attachment.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+        <ul>
+          <% attachment.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      <% end %>
     </div>
-  <% end %>
 
   <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+    <%= form.label :title, "Title *", style: "display: block" %>
+    <%= form.text_field :title, required: true, id: "attachment_title" %>
+    <span id="titleError" style="color: red; display: none;">*</span>
   </div>
 
   <div>
@@ -22,26 +23,104 @@
   </div>
 
   <div>
-    <%= form.label :file, style: "display: block;" %>
+    <%= form.label :file, "File *", style: "display: block;" %>
     <% if attachment.file.filename.present? %>
       <span style="color: green;"><%= attachment.file.filename %></span>
-    <% else %>
-      <%= form.file_field :file, {} %>
+    <% else %>      
+      <input type="file" style="color: transparent !important;" id="fileInput" />
+      <p id="selectedFile">No file selected</p>
+      <progress id="uploadProgress" value="0" max="100"></progress>
+      <span id="progressText">0%</span>
     <% end %>
   </div>
   <div>
-    <%= form.submit "Upload" %>
+    <a class="submit-btn" id="submitUpload">Upload</a>
   </div>
 <% end %>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const fileInput = document.querySelector('input[type="file"]');
-      fileInput.style.color = 'black';
-      fileInput.addEventListener('change', function() {
-        if (fileInput.files.length > 0) {
-          fileInput.style.color = 'green';
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+    const r = new Resumable({
+      target: "/uploads",
+      chunkSize: 3 * 1024 * 1024, // 2MB per chunk
+      simultaneousUploads: 4, // Parallel chunk uploads
+      testChunks: false, // Skip checking existing chunks
+      throttleProgressCallbacks: 1,
+      maxChunkRetries: 3,
+      headers: { "X-CSRF-Token": csrfToken }
+    });
+
+    r.assignBrowse(document.getElementById("fileInput"));
+
+
+        // Enable submit button only when a file is selected
+    r.on("fileAdded", function (file) {
+      document.getElementById("submitUpload").disabled = false; // Enable submit button
+      document.getElementById("selectedFile").innerText = `Selected File: ${file.fileName}`;
+    });
+
+    // Upload only when submit button is clicked
+    document.getElementById("submitUpload").addEventListener("click", function () {
+      r.upload(); // Start upload manually
+      this.disabled = true; // Disable submit button during upload
+    });
+
+    // Update progress bar
+    r.on("progress", function () {
+      let progress = Math.floor(r.progress() * 100);
+      document.getElementById("uploadProgress").value = progress;
+      document.getElementById("progressText").innerText = `${progress}%`;
+    });
+
+    // Handle upload success
+    r.on("fileSuccess", function (file, message) {
+      console.log("File uploaded successfully!", message);
+      const title = document.getElementById("attachment_title").value;
+      const description = document.querySelector("textarea[name='attachment[description]']").value;
+      const filename = file.fileName;
+
+      fetch("/attachments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken
+        },
+        body: JSON.stringify({
+          attachment: {
+            title: title,
+            description: description,
+            file: filename
+          }
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log("Attachment created successfully!", data);
+          const errorList = document.getElementById("errors-upload-file");
+          errorList.innerHTML = ""
+          window.location.href = data.location;
+        } else {
+          console.error("Error creating attachment:", data.errors); 
+          const errorList = document.getElementById("errors-upload-file");
+          errorList.innerHTML = "<h2>Errors prohibited this attachment from being saved:</h2><ul>";
+          data.errors.forEach(error => {
+            errorList.innerHTML += `<li>${error}</li>`;
+          });
+          errorList.innerHTML += "</ul>";
         }
+      })
+      .catch(error => {
+        console.error("Error:", error);
       });
     });
-  </script>
+
+    // Handle upload failure
+    r.on("fileError", function (file, message) {
+      console.error("Upload failed:", message);
+      alert("Upload failed. Please try again.");
+    });
+  });
+</script>

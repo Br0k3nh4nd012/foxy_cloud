@@ -16,4 +16,5 @@ Rails.application.routes.draw do
   root "attachments#index"
 
   get "/:tag" => "attachments#access_file", as: :access_file, defaults: { tag: nil }
+  post "/uploads" => "attachments#uploads"
 end

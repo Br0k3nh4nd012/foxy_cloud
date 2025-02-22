@@ -46,6 +46,17 @@
   </tbody>
 </table>
 
+
+
+</br></br></br></br></br></br></br></br>
+<div>
+  <h2>resumable JS</h2>
+
+  <input type="file" id="fileInput" />
+  <progress id="uploadProgress" value="0" max="100"></progress>
+  <div id="progressText">0%</div>
+</div>
+
 <script>
   function copyToClipboard(text, attachment_id) {
     navigator.clipboard.writeText(text).then(function() {
@@ -60,6 +71,46 @@
     console.error('Error copying text: ', error);
     });
   }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+    const r = new Resumable({
+      target: "/uploads",
+      chunkSize: 3 * 1024 * 1024, // 2MB per chunk
+      simultaneousUploads: 4, // Parallel chunk uploads
+      testChunks: false, // Skip checking existing chunks
+      throttleProgressCallbacks: 1,
+      maxChunkRetries: 3,
+      headers: { "X-CSRF-Token": csrfToken }
+    });
+
+    r.assignBrowse(document.getElementById("fileInput"));
+
+
+    r.on("fileAdded", function (file) {
+      r.upload(); // Start upload automatically
+    });
+
+    // Update progress bar
+    r.on("progress", function () {
+      let progress = Math.floor(r.progress() * 100);
+      document.getElementById("uploadProgress").value = progress;
+      document.getElementById("progressText").innerText = `${progress}%`;
+    });
+
+    // Handle upload success
+    r.on("fileSuccess", function (file, message) {
+      console.log("File uploaded successfully!", message);
+      alert("Upload complete!");
+    });
+
+    // Handle upload failure
+    r.on("fileError", function (file, message) {
+      console.error("Upload failed:", message);
+      alert("Upload failed. Please try again.");
+    });
+  });
 </script>
 
 

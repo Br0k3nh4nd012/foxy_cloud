@@ -23,6 +23,7 @@ body {
   padding: 1em;
   background: #f9f9f9;
   border-radius: 5px;
+  color: #333333;
 }
 
 .data-form div {
@@ -91,3 +92,17 @@ body {
   text-decoration: none;
   transition: background-color 0.3s, color 0.3s;
 }
+
+.submit-btn {
+  background: #294c63;
+  color: white;
+  border: none;
+  padding: 0.7em;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.submit-btn:hover {
+  background: #426b87;
+} 
