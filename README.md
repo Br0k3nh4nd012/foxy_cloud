@@ -1,24 +1,46 @@
-# README
+# Foxy Cloud
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Prerequisites
 
-Things you may want to cover:
+Before you begin, ensure you have met the following requirements:
+- You have installed [Visual Studio Code](https://code.visualstudio.com/) along with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
+- You have installed [Docker](https://www.docker.com/get-started) on your machine. Follow the instructions [here](https://docs.docker.com/get-docker/) to install Docker.
 
-* Ruby version
+You can use this repository having to install Ruby on your machine. Docker takes care of installing the right Ruby and Rails versions for you.
 
-* System dependencies
+## Getting Started
 
-* Configuration
+To get started with this project, follow these steps:
 
-* Database creation
+1. **Clone the repository** (forking is optional):
+  ```sh
+  git clone https://github.com/your-username/foxy_cloud.git
+  cd foxy_cloud
+  ```
 
-* Database initialization
+2. **Open the project in Visual Studio Code**:
+  ```sh
+  code .
+  ```
 
-* How to run the test suite
+3. **Rebuild using container**:
+  - If the Dev Containers extension is installed, you should see a popup at the bottom right corner saying "Rebuild using container". Click on it to start the containerized development environment.
 
-* Services (job queues, cache servers, search engines, etc.)
+This will make our application up and running for us.
 
-* Deployment instructions
+## About the Application
 
-* ...
+This application is designed to provide a seamless cloud experience. It includes features such as user authentication, data storage, and more.
+
+### Login Credentials
+
+For testing purposes, you can use the following login credentials:
+
+- **Email:** `one@example.com` & **Password:** `password`
+- **Email:** `two@example.com` & **Password:** `password`
+
+### Features
+
+- **User Authentication:** Users can log in to the application using their credentials.
+- **File Management:** Users can create, update, and delete their own files. These files will be listed only to the current user.
+- **File Sharing:** A tinyURL will be generated for all uploads, which can be shared globally. These URLs can be accessed by anyone without any access restrictions or rate limits for now.
