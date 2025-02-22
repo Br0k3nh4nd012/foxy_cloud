@@ -7,8 +7,11 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= yield :head %>
+    <%= render 'layouts/navbar'%>
+    <div style="margin: 10px">
+      <%= yield :head %>
+    </div>
+    
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
@@ -23,6 +26,39 @@
   </head>
 
   <body>
-    <%= yield %>
+    <div id="toast-alert" class="toast" style="position: fixed; top: 60px; right: 20px; background-color:rgb(189, 112, 112);; color: white; padding: 10px; border-radius: 5px; display: none;">
+      <span><%= flash[:alert] %></span>
+      <button onclick="document.getElementById('toast-alert').style.display='none'" style="background: none; border: none; color: white; font-size: 16px; float: right;">&times;</button>
+    </div>
+    <div id="toast-notice" class="toast" style="position: fixed; top: 60px; right: 20px; background-color:rgb(117, 159, 109);; color: white; padding: 10px; border-radius: 5px; display: none;">
+      <span><%= flash[:notice] %></span>
+      <button onclick="document.getElementById('toast-notice').style.display='none'" style="background: none; border: none; color: white; font-size: 16px; float: right;">&times;</button>
+    </div>
+
+    <div style="margin: 10px">
+      <%= yield %>
+    </div>
   </body>
 </html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var toastAlert = document.getElementById("toast-alert");
+    <% if flash[:alert] %>
+      toastAlert.style.display = "block";
+      setTimeout(function() {
+      toastAlert.style.display = "none";
+      }, 5000); // Hide after 5 seconds
+    <% end %>
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    var toastNotice = document.getElementById("toast-notice");
+    <% if flash[:notice] %>
+      toastNotice.style.display = "block";
+      setTimeout(function() {
+      toastNotice.style.display = "none";
+      }, 5000); // Hide after 5 seconds
+    <% end %>
+  });
+</script>

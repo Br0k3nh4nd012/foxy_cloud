@@ -1,0 +1,105 @@
+<% content_for :title, "Attachments" %>
+<h2>My files</h2>
+<div style="text-align: right; margin: 30px">
+  <a href="<%= new_attachment_path %>" class="new-attachment-btn">+ New attachment</a>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Format</th>
+      <th>File size</th>
+      <th>Object URL</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @attachments.each do |attachment| %>
+      <tr>
+        <td><%= attachment.id %></td>
+        <td><%= attachment.title %></td>
+        <td><%= attachment.description %></td>
+        <td><%= attachment.file.content_type %></td>
+        <td>
+          <%= attachment.object_size %>
+          
+        </td>
+        <td>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <%= request.base_url + '/' + attachment.tag %>
+            <a href="#" onclick="copyToClipboard('<%= request.base_url + '/' + attachment.tag %>', <%= attachment.id %>); event.preventDefault();" id="copy-icon-<%=attachment.id%>">
+              <i class="fa fa-copy" style="color: white;" title="click to copy!"></i>
+            </a>
+            </div>
+          <div>          
+        </td>
+
+        <td>
+          <%= link_to "Edit", edit_attachment_path(attachment) %>
+          <%= link_to "Delete", attachment, method: :delete, data: { confirm: "Are you sure?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  function copyToClipboard(text, attachment_id) {
+    navigator.clipboard.writeText(text).then(function() {
+      document.querySelector(`#copy-icon-${attachment_id} i`).className = 'fa fa-check';
+      document.querySelector(`#copy-icon-${attachment_id} i`).title = "Copied!"
+      setTimeout(function() {
+        document.querySelector(`#copy-icon-${attachment_id} i`).className = 'fa fa-copy';
+        document.querySelector(`#copy-icon-${attachment_id} i`).title = "click to copy!"
+        
+      }, 2000);
+    }).catch(function(error) {
+    console.error('Error copying text: ', error);
+    });
+  }
+</script>
+
+
+
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  th {
+    background-color:rgb(60, 85, 116);
+    text-align: left;
+  }
+
+  tr:hover {
+    background-color: rgb(76, 103, 135);
+  }
+
+  th, td {
+    padding: 12px;
+    text-align: left;
+  }
+
+  .new-attachment-btn:hover {
+    background-color: white;
+    color: rgb(60, 85, 116);
+  }
+  .new-attachment-btn {
+    border: 2px solid rgb(60, 85, 116);
+    border-radius: 25px;
+    background-color: transparent;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+  }
+</style>

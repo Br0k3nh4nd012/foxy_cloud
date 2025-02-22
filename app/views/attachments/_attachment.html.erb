@@ -1,0 +1,32 @@
+<div id="<%= dom_id attachment %>">
+  <p>
+    <strong>Title:</strong>
+    <%= attachment.title %>
+  </p>
+
+  <p>
+    <strong>Description:</strong>
+    <%= attachment.description %>
+  </p>
+
+  <p>
+    <strong>Format:</strong>
+    <%= attachment.format %>
+  </p>
+
+  <p>
+    <strong>Size in mb:</strong>
+    <%= attachment.size_in_mb %>
+  </p>
+
+  <p>
+    <strong>File:</strong>
+    <%= link_to attachment.file.filename, attachment.file if attachment.file.attached? %>
+  </p>
+
+  <p>
+    <strong>User:</strong>
+    <%= attachment.user_id %>
+  </p>
+
+</div>

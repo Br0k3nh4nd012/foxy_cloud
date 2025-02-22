@@ -1,0 +1,52 @@
+<% if Current.user %>
+  <nav>
+      <div>
+        <a href="/" id='heading'><i class="fa fa-cloud"></i> Foxy Cloud</a>
+      </div>
+      <div style="display: flex; justify-content: space-between; min-width: 220px">
+        <span><%= link_to "My files", "/", class: "logout-btn" %></span>
+        <span><i class='fa fa-user'></i>&nbsp;<%= Current.user.email_address %></span>
+        <span><%= link_to "Logout", "/session", method: :delete, class: "logout-btn" %></span>
+      </div>
+  </nav>
+<% end %>
+
+
+
+<style>
+  #heading {
+    text-decoration: none; 
+    font-size: 30px; 
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  nav {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 20px
+  }
+
+  .logout-btn {
+    background-color: #132938;
+    border-radius: 25px;
+    color: rgb(255, 255, 255);
+    padding: 10px 12px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .logout-btn:hover {
+    background-color: white;
+    color: rgb(60, 85, 116);
+  }
+  .new-attachment-btn {
+    border: 2px solid rgb(60, 85, 116);
+    border-radius: 25px;
+    background-color: transparent;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+  }
+</style>

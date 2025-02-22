@@ -1,0 +1,11 @@
+<% content_for :title, "New attachment" %>
+
+<h3 style="text-align: center;">Upload File</h3>
+
+<%= render "form", attachment: @attachment %>
+
+<br>
+
+<div>
+  <%= link_to "Back to attachments", attachments_path %>
+</div>

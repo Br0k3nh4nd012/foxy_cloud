@@ -7,4 +7,87 @@
  * depending on specificity.
  *
  * Consider organizing styles into separate files for maintainability.
+
+ *= require font-awesome
  */
+ 
+body {
+  margin: auto !important;
+  background-color: #132938;
+  color: white
+}
+
+.data-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1em;
+  background: #f9f9f9;
+  border-radius: 5px;
+}
+
+.data-form div {
+  margin-bottom: 1em;
+}
+
+.data-form div label {
+  margin-bottom: .5em;
+  color: #333333;
+}
+
+.data-form div input, form div textarea, form div select {
+  border: 1px solid #CCCCCC;
+  padding: .5em;
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.data-form div input[type="submit"] {
+  background: #294c63;
+  color: white;
+  border: none;
+  padding: 0.7em;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.data-form div input[type="submit"]:hover {
+  background: #426b87;;
+}
+
+.error {
+  color: red;
+}
+
+
+.custom-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #50a8d8;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.custom-button:hover {
+  background-color: #0056b3;
+}
+
+.new-attachment-btn:hover {
+  background-color: white;
+  color: rgb(60, 85, 116);
+}
+.new-attachment-btn {
+  border: 2px solid rgb(60, 85, 116);
+  border-radius: 25px;
+  background-color: transparent;
+  color: rgb(255, 255, 255);
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
