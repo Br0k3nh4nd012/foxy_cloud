@@ -6,6 +6,7 @@ class Attachment < ApplicationRecord
   ## VALIDATIONS ##
   # validates :file, size: { less_than: 1.gigabytes }
   validates :tag , uniqueness: true
+  validates :file, presence: true
 
   ## CALLBACKS ##
   before_validation :populate_tag

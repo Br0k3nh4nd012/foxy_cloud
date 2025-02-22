@@ -23,7 +23,7 @@
 
   <div>
     <%= form.label :file, style: "display: block;" %>
-    <% if attachment.file.present? %>
+    <% if attachment.file.filename.present? %>
       <span style="color: green;"><%= attachment.file.filename %></span>
     <% else %>
       <%= form.file_field :file, {} %>

@@ -45,8 +45,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_22_034515) do
   create_table "attachments", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.string "format"
-    t.integer "size_in_mb"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
