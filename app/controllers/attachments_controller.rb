@@ -26,17 +26,16 @@ class AttachmentsController < ApplicationController
   def create
     @attachment = Attachment.new(attachment_params)
     @attachment.user = Current.user
-    debugger
     @attachment.file.attach(io: File.open(Rails.root.join("public/uploads/#{params[:attachment][:file]}")), filename: params[:attachment][:file])
 
     respond_to do |format|
       if @attachment.save
-        flash[:notice] = "Attachment was successfully created."
+        flash[:notice] = "File Uploaded successfully!"
         format.html { redirect_to attachments_path, notice: "Attachment was successfully created." }
-        format.json { render :show, status: :created, location: attachments_path }
+        format.json { render json: { success: true, redirect_link: attachments_path } }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @attachment.errors, status: :unprocessable_entity }
+        format.json { render json: { success: false, errors: @attachment.errors }, status: :unprocessable_entity }
       end
     end
   end

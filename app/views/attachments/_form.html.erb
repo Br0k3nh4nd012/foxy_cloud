@@ -85,7 +85,8 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": csrfToken
+          "X-CSRF-Token": csrfToken,
+          'Accept': 'application/json'
         },
         body: JSON.stringify({
           attachment: {
@@ -98,12 +99,10 @@
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          console.log("Attachment created successfully!", data);
           const errorList = document.getElementById("errors-upload-file");
           errorList.innerHTML = ""
-          window.location.href = data.location;
+          window.location.href = data.redirect_link;
         } else {
-          console.error("Error creating attachment:", data.errors); 
           const errorList = document.getElementById("errors-upload-file");
           errorList.innerHTML = "<h2>Errors prohibited this attachment from being saved:</h2><ul>";
           data.errors.forEach(error => {
