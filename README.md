@@ -6,7 +6,7 @@ Before you begin, ensure you have met the following requirements:
 - You have installed [Visual Studio Code](https://code.visualstudio.com/) along with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
 - You have installed [Docker](https://www.docker.com/get-started) on your machine. Follow the instructions [here](https://docs.docker.com/get-docker/) to install Docker.
 
-You can use this repository having to install Ruby on your machine. Docker takes care of installing the right Ruby and Rails versions for you.
+You can use this repository without having to install Ruby on your machine. Docker takes care of installing the right Ruby and Rails versions for you.
 
 ## Getting Started
 
@@ -44,3 +44,4 @@ For testing purposes, you can use the following login credentials:
 - **User Authentication:** Users can log in to the application using their credentials.
 - **File Management:** Users can create, update, and delete their own files. These files will be listed only to the current user.
 - **File Sharing:** A tinyURL will be generated for all uploads, which can be shared globally. These URLs can be accessed by anyone without any access restrictions or rate limits for now.
+- **Chunked Parallel File Uploads:** This feature allows files to be uploaded in chunks and in parallel, significantly speeding up the file upload process. This feature is implemented in the `file_upload_chunk` branch.
